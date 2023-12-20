@@ -18,9 +18,6 @@ export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       return ctx.db.post.create({
         data: {
           name: input.name,
@@ -37,9 +34,6 @@ export const postRouter = createTRPCRouter({
     });
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
   delete: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
