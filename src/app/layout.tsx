@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 import { Theme } from "@radix-ui/themes";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import { Navbar } from "./_components/UI/Navbar/Navbar";
 
 const poppins = Poppins({
   subsets: ["latin", "devanagari"],
@@ -30,7 +29,6 @@ export default function RootLayout({
       >
         <Theme>
           <TRPCReactProvider cookies={cookies().toString()}>
-            <Navbar />
             {children}
           </TRPCReactProvider>
         </Theme>

@@ -5,18 +5,20 @@ import { redirect } from "next/navigation";
 import { NewPostForm } from "./_components/NewPostForm/NewPostForm";
 import { Post } from "./_components/UI/Post/Post";
 import { useSession } from "next-auth/react";
+import { Navbar } from "./_components/UI/Navbar/Navbar";
 
 export default function Home() {
   const session = useSession();
 
   if (session.status !== "authenticated") {
-    redirect("/signup");
+    redirect("/signin");
   }
   const { data, refetch } = api.post.getAll.useQuery();
   console.log(data);
 
   return (
     <main className=" flex min-h-screen w-screen flex-col items-center  text-white">
+      <Navbar />
       <div className="container flex flex-col items-center gap-8 px-4 py-16 ">
         {session.status == "authenticated" && data && (
           <>

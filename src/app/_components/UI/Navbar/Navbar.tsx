@@ -17,7 +17,7 @@ export const Navbar = () => {
           <FaSearch />
         </Link>
       </nav>
-      {status === "authenticated" && session.user.image ? (
+      {status === "authenticated" && session.user.image && (
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <Image
@@ -33,14 +33,10 @@ export const Navbar = () => {
               onClick={() => signOut()}
               className=" absolute -left-5 select-none rounded-xl bg-primary px-4 py-2 transition-colors duration-100 hover:bg-primary/90 hover:outline-none"
             >
-              Wyloguj
+              Logout
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-      ) : (
-        <button onClick={() => signIn("discord")} className="text-white">
-          Login{" "}
-        </button>
       )}
     </header>
   );
