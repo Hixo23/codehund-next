@@ -1,14 +1,29 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import type { Session } from "next-auth";
 import Image from "next/image";
 import { useState } from "react";
 
-export const NewPostForm = ({ session }: { session: Session }) => {
+export const NewPostForm = ({
+  session,
+  refetch,
+}: {
+  session: Session;
+  refetch: () => void;
+}) => {
   const [inputValue, setInputValue] = useState("");
+  const mutation = api.post.create.useMutation();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    mutation.mutate({ name: inputValue });
+    setInputValue("");
+    refetch();
+  };
 
   return (
-    <form className=" text-white">
+    <form onSubmit={handleSubmit} className="p-4 text-white">
       <div className="flex gap-4">
         <Image
           src={session.user.image!}
@@ -22,6 +37,7 @@ export const NewPostForm = ({ session }: { session: Session }) => {
           className="rounded-xl bg-secondary p-4"
           rows={5}
           cols={64}
+          value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
           minLength={1}
         ></textarea>

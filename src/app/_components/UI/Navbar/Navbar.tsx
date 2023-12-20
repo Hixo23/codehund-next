@@ -8,7 +8,7 @@ import Image from "next/image";
 export const Navbar = () => {
   const { data: session, status } = useSession();
   return (
-    <header className="sticky top-0 flex h-16 w-screen items-center justify-around">
+    <header className="sticky top-0 flex h-16 w-screen items-center justify-around backdrop-blur-xl">
       <nav className="flex gap-4 text-2xl text-gray-300">
         <Link href="/">
           <FaHome />
@@ -31,7 +31,7 @@ export const Navbar = () => {
           <DropdownMenu.Content className="relative">
             <DropdownMenu.Item
               onClick={() => signOut()}
-              className=" absolute -left-4 select-none bg-primary px-4 py-2"
+              className=" absolute -left-5 select-none rounded-xl bg-primary px-4 py-2 transition-colors duration-100 hover:bg-primary/90 hover:outline-none"
             >
               Wyloguj
             </DropdownMenu.Item>
