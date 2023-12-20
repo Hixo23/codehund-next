@@ -11,8 +11,13 @@ const SignInPage = () => {
   }
   return (
     <main className="flex h-screen w-screen items-center justify-center">
-      <div className="flex h-96 w-[36rem] flex-col items-center justify-between rounded-xl bg-primary/30 py-10">
-        <h1 className="text-4xl font-semibold text-white">Hello!</h1>
+      <div className="flex h-96 flex-col items-center justify-between rounded-xl bg-primary/30 px-4 py-10 md:w-1/3">
+        <div className="text-center">
+          <h1 className="text-4xl font-semibold text-white">Hello!</h1>
+          <p className=" text-gray-500">
+            You need to be logged in to use codehund.
+          </p>
+        </div>
         <div className="h-1/2">
           <button
             onClick={() => signIn("discord")}

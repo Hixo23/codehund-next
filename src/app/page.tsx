@@ -13,8 +13,7 @@ export default function Home() {
   if (session.status !== "authenticated") {
     redirect("/signin");
   }
-  const { data, refetch } = api.post.getAll.useQuery();
-  console.log(data);
+  const { data } = api.post.getAll.useQuery();
 
   return (
     <main className=" flex min-h-screen w-screen flex-col items-center  text-white">
@@ -22,7 +21,7 @@ export default function Home() {
       <div className="container flex flex-col items-center gap-8 px-4 py-16 ">
         {session.status == "authenticated" && data && (
           <>
-            <NewPostForm refetch={refetch} session={session.data} />
+            <NewPostForm session={session.data} />
             <div>
               {data.map((post) => {
                 return <Post key={post.id} {...post} />;

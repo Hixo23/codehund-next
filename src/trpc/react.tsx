@@ -16,7 +16,16 @@ export function TRPCReactProvider(props: {
   children: React.ReactNode;
   cookies: string;
 }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchInterval: 10000,
+          },
+        },
+      }),
+  );
 
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -43,7 +52,7 @@ export function TRPCReactProvider(props: {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <Toaster />
+        <Toaster theme="dark" />
         <api.Provider client={trpcClient} queryClient={queryClient}>
           {props.children}
         </api.Provider>
