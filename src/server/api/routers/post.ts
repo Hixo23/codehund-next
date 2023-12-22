@@ -22,6 +22,7 @@ export const postRouter = createTRPCRouter({
         data: {
           name: input.name,
           createdBy: { connect: { id: ctx.session.user.id } },
+          
         },
       });
     }),
@@ -30,6 +31,9 @@ export const postRouter = createTRPCRouter({
     return ctx.db.post.findMany({
       include: {
         createdBy: true,
+      },
+      orderBy: {
+        id: "asc",
       },
     });
   }),

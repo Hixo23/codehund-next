@@ -4,8 +4,9 @@ import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import { api } from "@/trpc/react";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaThumbsUp } from "react-icons/fa";
 import { toast } from "sonner";
+import { cn } from "@/utils/cn";
 
 type PostProps = {
   createdBy: {
@@ -26,16 +27,26 @@ type PostProps = {
 export const Post = ({ name, createdAt, createdBy, id }: PostProps) => {
   const { data: session } = useSession();
   const isCurrentUserPost = session?.user.id === createdBy.id;
-  const mutation = api.post.delete.useMutation({
+  const deletePost = api.post.delete.useMutation({
     onSuccess: () => toast("Your post has been successfully deleted"),
   });
 
+  const addLikeMutation = api.likes.addLike.useMutation();
+  const likes = api.likes.getLikes.useQuery({ id: id });
+
   const handleDelete = () => {
-    mutation.mutate({ id: id });
+    deletePost.mutate({ id: id });
   };
 
+  const handleLike = () => {
+    if (!session?.user) return;
+    addLikeMutation.mutate({ postId: id });
+  };
+
+  console.log(likes.data);
+
   return (
-    <div className="items mb-12 flex gap-4 rounded-xl border border-gray-400 p-6 py-6 md:w-[48rem]">
+    <div className="items mb-12 flex gap-4 rounded-xl border border-primary p-6 py-6 md:w-[48rem]">
       <Image
         className="h-12 w-12 rounded-full"
         src={createdBy.image!}
@@ -56,6 +67,18 @@ export const Post = ({ name, createdAt, createdBy, id }: PostProps) => {
           </p>
         </div>
         <p className="w-full">{name}</p>
+        <button
+          className={cn(
+            "flex w-16 items-center justify-center gap-2 rounded-xl border-2 border-primary py-2",
+            likes.data?.some((like) => like.likedBy.id === session?.user.id) &&
+              "bg-primary",
+          )}
+          rounded-xl
+          onClick={handleLike}
+        >
+          👍
+          <span>{likes.data?.length}</span>
+        </button>
       </div>
     </div>
   );

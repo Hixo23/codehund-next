@@ -62,6 +62,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    Likes         Likes[]
 }
 
 model VerificationToken {
@@ -70,4 +71,13 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Likes {
+    id        Int    @id @default(autoincrement())
+    postId    Int
+    likedBy   User   @relation(fields: [likedById], references: [id])
+    likedById String
+
+    @@index([id])
 }

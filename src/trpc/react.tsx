@@ -21,7 +21,7 @@ export function TRPCReactProvider(props: {
       new QueryClient({
         defaultOptions: {
           queries: {
-            refetchInterval: 10000,
+            refetchInterval: 5000,
           },
         },
       }),

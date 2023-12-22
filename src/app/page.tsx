@@ -15,6 +15,13 @@ export default function Home() {
   }
   const { data } = api.post.getAll.useQuery();
 
+  console.log(
+    data?.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    ),
+  );
+
   return (
     <main className=" flex min-h-screen w-screen flex-col items-center  text-white">
       <Navbar />
