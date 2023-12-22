@@ -1,6 +1,5 @@
 import * as z from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import type { Session } from "next-auth";
 
 export const likesRouter = createTRPCRouter({
   getLikes: protectedProcedure
@@ -15,7 +14,7 @@ export const likesRouter = createTRPCRouter({
 
       return likes;
     }),
-  addLike: protectedProcedure
+  toggleLike: protectedProcedure
     .input(z.object({ postId: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
       const existingLike = await ctx.db.likes.findFirst({

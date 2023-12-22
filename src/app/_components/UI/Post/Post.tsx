@@ -4,7 +4,7 @@ import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
 import { api } from "@/trpc/react";
-import { FaTrash, FaThumbsUp } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import { cn } from "@/utils/cn";
 
@@ -31,7 +31,7 @@ export const Post = ({ name, createdAt, createdBy, id }: PostProps) => {
     onSuccess: () => toast("Your post has been successfully deleted"),
   });
 
-  const addLikeMutation = api.likes.addLike.useMutation();
+  const addLikeMutation = api.likes.toggleLike.useMutation();
   const likes = api.likes.getLikes.useQuery({ id: id });
 
   const handleDelete = () => {
