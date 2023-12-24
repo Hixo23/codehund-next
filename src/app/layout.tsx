@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${poppins.className} min-w-screen flex min-h-screen flex-col overflow-x-hidden bg-background`}
+        className={` ${poppins.className} min-w-screen scrollbar scrollbar-track-primary scrollbar-thumb-secondary flex min-h-screen flex-col overflow-x-hidden bg-background`}
       >
         <Theme>
           <TRPCReactProvider cookies={cookies().toString()}>

@@ -22,7 +22,6 @@ export const postRouter = createTRPCRouter({
         data: {
           name: input.name,
           createdBy: { connect: { id: ctx.session.user.id } },
-          
         },
       });
     }),
@@ -44,6 +43,18 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.delete({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  getUserPosts: protectedProcedure
+    .input(z.object({ id: z.string().min(1) }))
+    .query(({ ctx, input }) => {
+      return ctx.db.post.findMany({
+        include: {
+          createdBy: true,
+        },
+        where: {
+          createdBy: { id: input.id },
         },
       });
     }),

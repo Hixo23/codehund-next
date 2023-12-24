@@ -63,6 +63,8 @@ model User {
     sessions      Session[]
     posts         Post[]
     Likes         Likes[]
+    follows       Int?
+    following     Int?
 }
 
 model VerificationToken {

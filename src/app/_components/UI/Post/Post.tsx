@@ -46,7 +46,7 @@ export const Post = ({ name, createdAt, createdBy, id }: PostProps) => {
   console.log(likes.data);
 
   return (
-    <div className="items mb-12 flex gap-4 rounded-xl border border-primary p-6 py-6 md:w-[48rem]">
+    <div className="items mb-12 flex gap-4 rounded-xl border border-primary p-6 py-6 text-white md:w-[48rem]">
       <Image
         className="h-12 w-12 rounded-full"
         src={createdBy.image!}
