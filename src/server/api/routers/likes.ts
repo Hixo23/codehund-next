@@ -5,7 +5,7 @@ export const likesRouter = createTRPCRouter({
   getLikes: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .query(async ({ ctx, input }) => {
-      const likes = await ctx.db.likes.findMany({
+      const likes = await ctx.db.like.findMany({
         where: { postId: input.id },
         include: {
           likedBy: true,
@@ -17,7 +17,7 @@ export const likesRouter = createTRPCRouter({
   toggleLike: protectedProcedure
     .input(z.object({ postId: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      const existingLike = await ctx.db.likes.findFirst({
+      const existingLike = await ctx.db.like.findFirst({
         where: {
           postId: input.postId,
           likedBy: { id: ctx.session.user.id },
@@ -25,7 +25,7 @@ export const likesRouter = createTRPCRouter({
       });
 
       if (existingLike) {
-        return await ctx.db.likes.delete({
+        return await ctx.db.like.delete({
           where: {
             likedBy: {
               id: ctx.session.user.id,
@@ -35,7 +35,7 @@ export const likesRouter = createTRPCRouter({
           },
         });
       } else {
-        return await ctx.db.likes.create({
+        return await ctx.db.like.create({
           data: {
             postId: input.postId,
             likedBy: { connect: { id: ctx.session.user.id } },

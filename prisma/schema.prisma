@@ -62,7 +62,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
-    Likes         Likes[]
+    likes         Like[]
     follows       Int?
     following     Int?
 }
@@ -75,7 +75,7 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Likes {
+model Like {
     id        Int    @id @default(autoincrement())
     postId    Int
     likedBy   User   @relation(fields: [likedById], references: [id])

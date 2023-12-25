@@ -8,7 +8,7 @@ import { Post } from "../_components/UI/Post/Post";
 
 const Profile = () => {
   const { data: session, status } = useSession();
-  if (status !== "authenticated" || !session.user) return redirect("/");
+  if (status !== "authenticated" || !session.user) return redirect("/signin");
   const userPosts = api.post.getUserPosts.useQuery({ id: session.user.id });
   const userInfo = api.profile.getProfile.useQuery({ id: session.user.id });
   return (
