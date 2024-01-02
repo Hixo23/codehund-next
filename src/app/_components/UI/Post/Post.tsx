@@ -7,6 +7,7 @@ import { api } from "@/trpc/react";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 import { cn } from "@/utils/cn";
+import Link from "next/link";
 
 type PostProps = {
   createdBy: {
@@ -61,7 +62,9 @@ export const Post = ({ name, createdAt, createdBy, id }: PostProps) => {
           </button>
         )}
         <div className="flex items-center gap-4">
-          <p className="font-bold">{createdBy.name}</p>
+          <Link href={`/profile/${createdBy.name}`} className="font-bold">
+            {createdBy.name}
+          </Link>
           <p className="text-sm">
             {formatDistanceToNow(new Date(createdAt)).replace("about", "")} ago
           </p>

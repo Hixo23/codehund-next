@@ -54,17 +54,19 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
-    likes         Like[]
-    follows       Int?
-    following     Int?
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    likes          Like[]
+    posts          Post[]
+    following      Follow[]  @relation(name: "FollowedProfile")
+    followers      Follow[]  @relation(name: "FollowerProfile")
+    followersCount Int?      @default(0)
+    followingCount Int?      @default(0)
 }
 
 model VerificationToken {
@@ -82,4 +84,14 @@ model Like {
     likedById String
 
     @@index([id])
+}
+
+model Follow {
+    id         String @id @default(cuid())
+    followedId String
+    followed   User   @relation(name: "FollowedProfile", fields: [followedId], references: [id])
+    followerId String
+    follower   User   @relation(name: "FollowerProfile", fields: [followerId], references: [id])
+
+    @@unique([followedId, followerId])
 }

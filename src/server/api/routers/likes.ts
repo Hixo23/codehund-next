@@ -12,15 +12,16 @@ export const likesRouter = createTRPCRouter({
         },
       });
 
-      return likes;
+      return likes ?? [];
     }),
   toggleLike: protectedProcedure
     .input(z.object({ postId: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
+      const currentUserId = ctx.session.user.id;
       const existingLike = await ctx.db.like.findFirst({
         where: {
           postId: input.postId,
-          likedBy: { id: ctx.session.user.id },
+          likedBy: { id: currentUserId },
         },
       });
 
@@ -28,7 +29,7 @@ export const likesRouter = createTRPCRouter({
         return await ctx.db.like.delete({
           where: {
             likedBy: {
-              id: ctx.session.user.id,
+              id: currentUserId,
             },
             postId: input.postId,
             id: existingLike.id,

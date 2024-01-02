@@ -7,14 +7,6 @@ import {
 } from "@/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   create: protectedProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
@@ -26,7 +18,7 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.post.findMany({
       include: {
         createdBy: true,
@@ -43,18 +35,6 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.delete({
         where: {
           id: input.id,
-        },
-      });
-    }),
-  getUserPosts: protectedProcedure
-    .input(z.object({ id: z.string().min(1) }))
-    .query(({ ctx, input }) => {
-      return ctx.db.post.findMany({
-        include: {
-          createdBy: true,
-        },
-        where: {
-          createdBy: { id: input.id },
         },
       });
     }),
