@@ -10,7 +10,7 @@ const Profile = () => {
   const { data: session, status } = useSession();
   if (status !== "authenticated" || !session.user.name)
     return redirect("/signin");
-  const userInfo = api.profile.getProfile.useQuery({ name: session.user.name });
+  const user = api.profile.getProfile.useQuery({ name: session.user.name });
   return (
     <main className="flex min-h-screen min-w-full flex-col items-center ">
       <div className="my-24 flex h-44 w-full items-center justify-center gap-4 bg-primary">
@@ -29,23 +29,23 @@ const Profile = () => {
             <li>
               Follows:{" "}
               <span className="font-bold">
-                {userInfo.data?.followersCount ?? 0}
+                {user.data?.followers.length ?? 0}
               </span>
             </li>
             <li>
               Following:{" "}
               <span className="font-bold">
-                -{userInfo.data?.followingCount ?? 0}
+                {user.data?.following.length ?? 0}
               </span>
             </li>
             <li>
               Posts:{" "}
-              <span className="font-bold">{userInfo.data?.posts.length}</span>
+              <span className="font-bold">{user.data?.posts.length}</span>
             </li>
           </ul>
         </div>
       </div>
-      {userInfo.data?.posts.map((post) => <Post key={post.id} {...post} />)}
+      {user.data?.posts.map((post) => <Post key={post.id} {...post} />)}
     </main>
   );
 };

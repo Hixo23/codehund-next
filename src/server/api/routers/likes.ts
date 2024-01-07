@@ -1,8 +1,8 @@
 import * as z from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const likesRouter = createTRPCRouter({
-  getLikes: protectedProcedure
+  getLikes: publicProcedure
     .input(z.object({ id: z.number().min(1) }))
     .query(async ({ ctx, input }) => {
       const likes = await ctx.db.like.findMany({

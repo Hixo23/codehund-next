@@ -19,43 +19,34 @@ export const profileRouter = createTRPCRouter({
   toggleFollow: protectedProcedure
     .input(
       z.object({
-        followerId: z.string().min(1),
         followedId: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const currentUserId = ctx.session.user.id;
-
-      const existingFollow = await ctx.db.user.findFirst({
-        where: {
-          id: input.followedId,
-          followers: { some: { followerId: currentUserId } },
-        },
-      });
-
       const data = {
         followedId: input.followedId,
         followerId: currentUserId,
       };
 
-      if (!existingFollow) {
-        await ctx.db.user.update({
-          where: {
-            id: data.followedId,
-          },
-          data: {
-            followersCount: { increment: 1 },
-          },
-        });
+      const existingFollow = await ctx.db.user.findFirst({
+        where: {
+          id: input.followedId,
+         
+        },
+        include: {
+          following: true,
+          followers: true,
+        },
+      });
 
-        await ctx.db.user.update({
-          where: {
-            id: data.followerId,
-          },
-          data: {
-            followingCount: { increment: 1 },
-          },
-        });
-      }
+      console.log(existingFollow);
+
+      await ctx.db.follow.create({
+        data: {
+          follower: { connect: { id: data.followerId } },
+          followed: { connect: { id: data.followedId } },
+        },
+      });
     }),
 });
